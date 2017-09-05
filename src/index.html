@@ -1,0 +1,25 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World!</title>
+    <link rel="stylesheet" href="./style/normalize.css">
+    <link rel="stylesheet" href="./style/style.css">
+    <script src="./models/grid.js"></script>
+</head>
+
+<body>
+    <drag-region>Brain bits</drag-region>
+    <div id="app"></div>
+    <script>
+        import Vue from 'vue'
+        import App from './app.vue'
+
+        new Vue({
+            el: '#app',
+            render: h => h(App)
+        });
+    </script>
+</body>
+
+</html>

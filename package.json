@@ -1,0 +1,31 @@
+{
+  "name": "brain-bits",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "babel-preset-react": "^6.24.1",
+    "electron": "^1.8.0",
+    "electron-compile": "^6.4.1",
+    "electron-reload": "^1.2.1",
+    "vue": "^2.4.2",
+    "vueify": "^9.4.1"
+  },
+  "devDependencies": {
+    "devtron": "^1.4.0",
+    "electron-compilers": "^5.9.0",
+    "eslint": "^4.6.0",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "vue-devtools": "^3.1.6"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@gitlab.arm.ag:10022/dashersw/brain-bits.git"
+  },
+  "author": "Armagan Amcalar <armagan@amcalar.com>",
+  "license": "MIT"
+}
