@@ -1,38 +1,69 @@
 <script>
-import GridModel from '../models/grid';
+import Grid from '../models/grid';
+import MatrixRunner from '../models/matrix-runner';
 
 export default {
     name: 'grid',
-    data: () => ({
-        grid: new GridModel()
-    })
+    props: ['grid'],
 }
 </script>
 
 <template lang="jade">
-    div#grid-container
-        div#grid
-            span(v-for="cell in grid.cells" v-bind:key="cell.letter")
-                {{cell.letter}}
+#grid-container
+    #grid
+        .cell(v-for="cell in grid.cells" v-bind:key="cell.letter" v-bind:class="[{ highlighted: cell.highlighted}, cell.highlighted && cell.color]")
+            {{cell.letter}}
 </template>
 
 <style lang="scss">
-    #grid-container {
+#grid-container {
+    text-align: center;
+    height: 100%;
+}
+
+#grid {
+    width: 72vmin;
+    height: 72vmin;
+    margin: calc(14vmin - 36px) auto 14vmin;
+
+    & .cell {
+        display: inline-block;
+        width: 8vmin;
+        height: 8vmin;
+        line-height: 8vmin;
+        margin: 2vmin;
+        font-size: 4vmin;
         text-align: center;
-    }
 
-    #grid {
-        width: 72vmin;
-        height: 72vmin;
-        margin: calc(14vmin - 40px) auto 14vmin;
+        &.highlighted {
+            &.red {
+                background: #ff1744;
+            }
 
-        & span {
-            display: inline-block;
-            width: 12vmin;
-            height: 12vmin;
-            line-height: 12vmin;
-            font-size: 6vmin;
-            text-align: center;
+            &.orange {
+                background: #ff5722;
+            }
+
+            &.blue {
+                background: #1565c0;
+            }
+
+            &.yellow {
+                background: #795548;
+            }
+
+            &.green {
+                background: #388e3c;
+            }
+
+            &.purple {
+                background: #8e24aa;
+            }
+        }
+
+        &.transparent {
+            background: none!important;
         }
     }
+}
 </style>
