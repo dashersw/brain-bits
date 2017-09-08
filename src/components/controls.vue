@@ -75,7 +75,6 @@ export default {
     fieldset {
         border: none;
         border-top: 1px solid #666;
-        padding: 0.5em;
     }
 
     &.visible {
