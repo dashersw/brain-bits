@@ -19,7 +19,7 @@ const adjacent = (i1, i2) => {
 
 const rnd = limit => Math.floor(Math.random() * limit);
 
-export const createRNAG = (/** @type { Array.<number> } */arr, groupCount, groupSize) => {
+export const createRNAM = (/** @type { Array.<number> } */arr, groupCount, groupSize) => {
     const tempArr = arr.slice();
 
     const rv = [];
