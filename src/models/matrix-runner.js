@@ -1,14 +1,18 @@
 import _ from 'lodash';
+import EventEmitter from 'events';
+
 import { createArray, createRNAG } from '../util';
 import { Grid, Cell } from './grid';
 
-export default class MatrixRunner {
+export default class MatrixRunner extends EventEmitter {
     /**
      * @param {Grid} grid
      */
     constructor(grid) {
+        super();
         this.grid = grid;
         this._gridIndexes = this.createGridIndexes();
+        this._gridAlphabet = grid.alphabet;
         this._colors = Cell.ColorsList;
         this.timeout = null;
     }
@@ -56,10 +60,16 @@ export default class MatrixRunner {
         this.colors = this._colors.slice();
 
         this.activeIndex = this.gridIndexes.shift();
+        this.formatAndPublishData(this.activeIndex, now);
         this.grid.dim();
 
         this.activeIndex.forEach(c => this.grid.highlightCell(c, this.colors.shift()));
 
         this.timeout = setTimeout(() => this.loop(), 300);
+    }
+
+    formatAndPublishData(activeIndex, now) {
+        const symbols = activeIndex.map(i => [i, this._gridAlphabet[i]]);
+        this.emit('data', symbols, now);
     }
 }
