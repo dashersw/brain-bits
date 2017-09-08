@@ -3,6 +3,7 @@
 import path from 'path';
 import electron from 'electron';
 import vueDevTools from 'vue-devtools';
+import windowStateKeeper from 'electron-window-state';
 
 const { app, BrowserWindow } = electron;
 
@@ -29,12 +30,21 @@ let mainWindow;
 // });
 
 function createWindow() {
+    const mainWindowState = windowStateKeeper({
+        defaultWidth: 800,
+        defaultHeight: 800,
+    });
+
     mainWindow = new BrowserWindow({
-        width: 1600,
-        height: 900,
+        x: mainWindowState.x,
+        y: mainWindowState.y,
+        width: mainWindowState.width,
+        height: mainWindowState.height,
         titleBarStyle: 'hiddenInset',
         show: false,
     });
+
+    mainWindowState.manage(mainWindow);
 
     mainWindow.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
