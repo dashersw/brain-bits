@@ -27,7 +27,7 @@ export default {
         display: inline-block;
         width: 8vmin;
         height: 8vmin;
-        line-height: 8vmin;
+        line-height: 8.5vmin;
         margin: 2vmin;
         font-size: 4vmin;
         text-align: center;
