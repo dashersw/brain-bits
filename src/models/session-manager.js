@@ -11,10 +11,13 @@ export default class SessionManager {
         this.session = null;
     }
 
-    startSession() {
-        if (this.session) return;
+    startSession(mode, message) {
+        if (this.session) {
+            this.runner.start();
+            return;
+        }
 
-        this.session = new Session();
+        this.session = new Session(mode, message);
         this.recordManager = new RecordManager(this.runner);
         this.runner.start();
     }

@@ -1,5 +1,7 @@
 <script>
 import Mousetrap from 'mousetrap';
+import Toggle from './toggle';
+import Session from '../models/session';
 
 function bindings() {
     return [
@@ -17,49 +19,89 @@ export default {
         bindings.call(this).forEach(b => Mousetrap.bind.call(null, ...b));
     },
     methods: {
-        start() { this.sessionManager.startSession(); },
+        start() { this.sessionManager.startSession(this.sessionMode, this.message); },
         stop() { this.sessionManager.stopSession(); },
         reset() { this.sessionManager.resetSession(); },
-        toggleVisibility() { this.visible = !this.visible; }
+        toggleVisibility() { this.visible = !this.visible; },
     },
     data() {
-        return { visible: true };
-    }
+        return {
+            visible: false,
+            trainingMode: true,
+            message: 'HELLO'
+        };
+    },
+    computed: {
+        sessionMode() {
+            return this.trainingMode ? Session.Mode.TRAINING : Session.Mode.LIVE;
+        }
+    },
+    components: { Toggle }
 }
 </script>
 
 <template lang="jade">
 #controls(v-bind:class="[visible ? 'visible' : '']")
-    .button(@click="start()") Start
-    .button(@click="stop()") Stop
-    .button(@click="reset()") Reset
+    form(v-on:submit.prevent="")
+        h1 Controls
+        fieldset
+            toggle(v-model="trainingMode", label="Training Mode")
+            input.message(v-show="trainingMode", :value="message.toUpperCase()", @input="message = $event.target.value.toUpperCase()", placeholder="training message")
+        fieldset
+            span Session
+            .button(@click="start()") Start
+            .button(@click="stop()") Stop
+            .button(@click="reset()") Reset
+
 </template>
 
 <style lang="scss">
 #controls {
+    background: #121212;
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+    top: 50%;
+    left: 50%;
+    width: 60vmin;
+    padding: 15vmin;
+    border-radius: 1vmin;
     text-align: center;
-    transform: translate3d(0, 100%, 0);
+    transform: translate3d(-50%, 50%, 0);
     opacity: 0;
     transition: 0.3s all;
-    padding: 1vmin;
+    padding: 3vmin;
+    font-size: 3vmin;
+    box-shadow: 0 0 0 100vmin rgba(0, 0, 0, 0.9);
+
+    fieldset {
+        border: none;
+        border-top: 1px solid #666;
+        padding: 0.5em;
+    }
 
     &.visible {
-        transform: translate3d(0, 0, 0);
+        transform: translate3d(-50%, -50%, 0);
         opacity: 1;
+    }
+
+    .toggle {
+        padding-bottom: 1vmin;
     }
 }
 
 .button {
     display: inline-block;
     padding: 1vmin 1.5vmin;
-    margin: 1vmin;
-    font-size: 2vmin;
+    margin: 1vmin 0 1vmin 1vmin;
     border: 1px solid white;
     border-radius: 1vmin;
     cursor: pointer;
+}
+
+.button:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.button:active {
+    background: rgba(255,255,255,0.3);
 }
 </style>

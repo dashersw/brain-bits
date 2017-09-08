@@ -14,8 +14,23 @@ body {
 body {
     background: black;
     color: white;
-    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
     padding: 30px;
+}
+
+body, input {
+    font-family: 'Avenir Next', 'Helvetica Neue', sans-serif;
+}
+
+input {
+    background: none;
+    color: white;
+    border: none;
+    border-bottom: 1px solid white;
+    padding: 1vmin;
+}
+
+input:focus {
+    outline: none;
 }
 
 drag-region {
