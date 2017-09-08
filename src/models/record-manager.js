@@ -14,7 +14,9 @@ export default class RecordManager {
             size: { rows, cols },
         });
 
-        this.runner.on('data', this.onData.bind(this));
+        this.onData = this.onData.bind(this);
+
+        this.runner.on('data', this.onData);
     }
 
     setup() {
@@ -24,5 +26,11 @@ export default class RecordManager {
     onData(data, now) {
         // data.forEach(l => this.recorder.record(l, now));
         this.recorder.record([now, data]);
+    }
+
+    dispose() {
+        this.runner.removeListener(this.onData);
+        this.runner = null;
+        this.recorder = null;
     }
 }

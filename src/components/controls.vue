@@ -1,41 +1,30 @@
 <script>
-import MatrixRunner from '../models/matrix-runner';
 import Mousetrap from 'mousetrap';
+
+function bindings() {
+    return [
+        [['command+o', 'ctrl+o'], this.toggleVisibility],
+        [['command+s', 'ctrl+s'], this.start],
+        [['command+d', 'ctrl+d'], this.stop],
+        [['command+t', 'ctrl+t'], this.reset]
+    ]
+};
 
 export default {
     name: 'controls',
-    props: ['runner'],
-    created: function() {
-        Mousetrap.bind(['command+o', 'ctrl+o'], () => {
-            this.visible = !this.visible;
-        });
-
-        Mousetrap.bind(['command+s', 'ctrl+s'], () => {
-            this.runner.start();
-        });
-
-        Mousetrap.bind(['command+d', 'ctrl+d'], () => {
-            this.runner.stop();
-        });
-
-        Mousetrap.bind(['command+t', 'ctrl+t'], () => {
-            this.runner.reset();
-        });
+    props: ['sessionManager'],
+    created() {
+        bindings.call(this).forEach(b => Mousetrap.bind.call(null, ...b));
     },
     methods: {
-        start: function() {
-            this.runner.start();
-        },
-        stop: function() {
-            this.runner.stop();
-        },
-        reset: function() {
-            this.runner.reset();
-        },
+        start() { this.sessionManager.startSession(); },
+        stop() { this.sessionManager.stopSession(); },
+        reset() { this.sessionManager.resetSession(); },
+        toggleVisibility() { this.visible = !this.visible; }
     },
-    data: () => ({
-        visible: true
-    })
+    data() {
+        return { visible: true };
+    }
 }
 </script>
 
@@ -58,7 +47,7 @@ export default {
     transition: 0.3s all;
     padding: 1vmin;
 
-        &.visible {
+    &.visible {
         transform: translate3d(0, 0, 0);
         opacity: 1;
     }
@@ -71,5 +60,6 @@ export default {
     font-size: 2vmin;
     border: 1px solid white;
     border-radius: 1vmin;
+    cursor: pointer;
 }
 </style>

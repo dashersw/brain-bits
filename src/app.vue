@@ -7,7 +7,7 @@ import SessionManager from './models/session-manager';
 
 export default {
     name: 'app',
-    created: function() {
+    created() {
         this.matrix = new Matrix();
         this.runner = new MatrixRunner(this.matrix);
         this.sessionManager = new SessionManager(this.runner);
@@ -16,7 +16,7 @@ export default {
         window.runner = this.runner;
         window.sm = this.sessionManager;
     },
-    data: function() {
+    data() {
         return {
             matrix: this.matrix
         }
@@ -31,7 +31,7 @@ export default {
 <template>
     <div id="app">
         <grid v-bind:matrix="matrix" />
-        <controls v-bind:runner="runner" />
+        <controls v-bind:sessionManager="sessionManager" />
     </div>
 </template>
 
