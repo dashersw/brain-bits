@@ -3,10 +3,10 @@ import { createArray, getRowIndexes, getColIndexes } from '../util';
 const _alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
 export class Cell {
-    constructor(letter = '?') {
+    constructor(symbol = '?') {
         this.defaultColor = Cell.Colors.RED;
         this.color = '';
-        this.letter = letter;
+        this.symbol = symbol;
     }
 
     highlight(color = this.defaultColor) {
@@ -33,7 +33,7 @@ Cell.Colors = {
 
 Cell.ColorsList = Object.keys(Cell.Colors).map(key => Cell.Colors[key]);
 
-export default class Grid {
+export default class Matrix {
     constructor(rows = 6, cols = 6, alphabet = _alphabet) {
         this.defaultColor = Cell.Colors.RED;
 

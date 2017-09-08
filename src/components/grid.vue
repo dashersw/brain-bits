@@ -1,18 +1,15 @@
 <script>
-import Grid from '../models/grid';
-import MatrixRunner from '../models/matrix-runner';
-
 export default {
     name: 'grid',
-    props: ['grid'],
+    props: ['matrix'],
 }
 </script>
 
 <template lang="jade">
 #grid-container
     #grid
-        .cell(v-for="cell in grid.cells" v-bind:key="cell.letter" v-bind:class="[{ highlighted: cell.highlighted}, cell.highlighted && cell.color]")
-            {{cell.letter}}
+        .cell(v-for="cell in matrix.cells" v-bind:key="cell.symbol" v-bind:class="[{ highlighted: cell.highlighted}, cell.highlighted && cell.color]")
+            {{cell.symbol}}
 </template>
 
 <style lang="scss">

@@ -2,17 +2,17 @@ import _ from 'lodash';
 import EventEmitter from 'events';
 
 import { createArray, createRNAG } from '../util';
-import { Grid, Cell } from './grid';
+import { Matrix, Cell } from './matrix';
 
 export default class MatrixRunner extends EventEmitter {
     /**
-     * @param {Grid} grid
+     * @param {Matrix} Matrix
      */
-    constructor(grid) {
+    constructor(matrix) {
         super();
-        this.grid = grid;
-        this._gridIndexes = this.createGridIndexes();
-        this._gridAlphabet = grid.alphabet;
+        this.matrix = matrix;
+        this._matrixIndexes = this.createMatrixIndexes();
+        this._matrixAlphabet = matrix.alphabet;
         this._colors = Cell.ColorsList;
         this.timeout = null;
     }
@@ -28,8 +28,8 @@ export default class MatrixRunner extends EventEmitter {
     reset() {
         this.stop();
 
-        this.resetGridIndexes();
-        this.grid.dim();
+        this.resetMatrixIndexes();
+        this.matrix.dim();
         this.iteration = 0;
     }
 
@@ -38,38 +38,38 @@ export default class MatrixRunner extends EventEmitter {
         this.timeout = null;
     }
 
-    createGridIndexes() {
-        const arr = createArray(this.grid.size).map((e, i) => i);
+    createMatrixIndexes() {
+        const arr = createArray(this.matrix.size).map((e, i) => i);
 
-        return createRNAG(arr, this.grid.rows, this.grid.cols);
+        return createRNAG(arr, this.matrix.rows, this.matrix.cols);
     }
 
-    resetGridIndexes() {
-        this.gridIndexes = _.shuffle(this.createGridIndexes());
+    resetMatrixIndexes() {
+        this.matrixIndexes = _.shuffle(this.createMatrixIndexes());
     }
 
     loop() {
         const now = Date.now();
         this.lastLoop = now;
 
-        if (!this.gridIndexes.length) {
-            this.resetGridIndexes();
+        if (!this.matrixIndexes.length) {
+            this.resetMatrixIndexes();
             this.iteration++;
         }
 
         this.colors = this._colors.slice();
 
-        this.activeIndex = this.gridIndexes.shift();
+        this.activeIndex = this.matrixIndexes.shift();
         this.formatAndPublishData(this.activeIndex, now);
-        this.grid.dim();
+        this.matrix.dim();
 
-        this.activeIndex.forEach(c => this.grid.highlightCell(c, this.colors.shift()));
+        this.activeIndex.forEach(c => this.matrix.highlightCell(c, this.colors.shift()));
 
         this.timeout = setTimeout(() => this.loop(), 300);
     }
 
     formatAndPublishData(activeIndex, now) {
-        const symbols = activeIndex.map(i => [i, this._gridAlphabet[i]]);
+        const symbols = activeIndex.map(i => [i, this._matrixAlphabet[i]]);
         this.emit('data', symbols, now);
     }
 }

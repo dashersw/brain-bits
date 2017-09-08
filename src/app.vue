@@ -1,6 +1,6 @@
 <script>
 import Grid from './components/grid';
-import GridModel from './models/grid';
+import Matrix from './models/matrix';
 import MatrixRunner from './models/matrix-runner';
 import Controls from './components/controls.vue';
 import SessionManager from './models/session-manager';
@@ -8,17 +8,17 @@ import SessionManager from './models/session-manager';
 export default {
     name: 'app',
     created: function() {
-        this.grid = new GridModel();
-        this.runner = new MatrixRunner(this.grid);
+        this.matrix = new Matrix();
+        this.runner = new MatrixRunner(this.matrix);
         this.sessionManager = new SessionManager(this.runner);
 
-        window.grid = this.grid;
+        window.matrix = this.matrix;
         window.runner = this.runner;
         window.sm = this.sessionManager;
     },
     data: function() {
         return {
-            grid: this.grid
+            matrix: this.matrix
         }
     },
     components: {
@@ -30,7 +30,7 @@ export default {
 
 <template>
     <div id="app">
-        <grid v-bind:grid="grid" />
+        <grid v-bind:matrix="matrix" />
         <controls v-bind:runner="runner" />
     </div>
 </template>

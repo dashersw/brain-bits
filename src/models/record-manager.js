@@ -7,7 +7,7 @@ export default class RecordManager {
      */
     constructor(runner) {
         this.runner = runner;
-        const { alphabet, rows, cols } = this.runner.grid;
+        const { alphabet, rows, cols } = this.runner.matrix;
 
         this.recorder = new MatrixRecorder({
             alphabet,
