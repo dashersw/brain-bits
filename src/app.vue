@@ -21,18 +21,14 @@ export default {
             matrix: this.matrix
         }
     },
-    components: {
-        Grid,
-        Controls
-    }
+    components: { Grid, Controls }
 }
 </script>
 
-<template>
-    <div id="app">
-        <grid v-bind:matrix="matrix" />
-        <controls v-bind:sessionManager="sessionManager" />
-    </div>
+<template lang="jade">
+#app
+    grid(v-bind:matrix="matrix")
+    controls(v-bind:sessionManager="sessionManager")
 </template>
 
 <style lang="scss">
