@@ -18,7 +18,7 @@ export default {
     },
     data() {
         return {
-            matrix: this.matrix
+            matrix: this.matrix,
         }
     },
     components: { Grid, Controls }
@@ -27,8 +27,9 @@ export default {
 
 <template lang="jade">
 #app
-    grid(v-bind:matrix="matrix")
+    grid(:matrix="matrix")
     controls(v-bind:sessionManager="sessionManager")
+
 </template>
 
 <style lang="scss">
