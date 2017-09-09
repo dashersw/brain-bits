@@ -25,7 +25,7 @@ label.toggle
     font-size: 0.4em;
     display: inline-block;
     vertical-align: middle;
-    padding: 0vmin 1vmin;
+    padding: 1vmin;
     line-height: 5em;
 
     & .label {
@@ -39,18 +39,15 @@ label.toggle
         display: none;
     }
 
-    & input + span {
+    & input+span {
         display: block;
         position: relative;
         float: right;
         cursor: pointer;
         outline: none;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
         user-select: none;
         border-radius: 5em;
-        transition:  0.4s;
+        transition: 0.4s;
         border: 0.5em solid #ddd;
         padding: .5em;
         width: 10em;
@@ -61,13 +58,11 @@ label.toggle
         transition-property: border-color, background-color;
     }
 
-    & input + span:after {
+    & input+span:after {
         display: block;
         position: absolute;
         content: "";
         top: 0.6em;
-        // left: 1em;
-        // bottom: 1em;
         width: 3em;
         height: 3em;
         background-color: #dddddd;
@@ -76,11 +71,11 @@ label.toggle
         transition-property: transform, background-color;
     }
 
-    & input:checked + span {
+    & input:checked+span {
         border-color: #8ce196;
     }
 
-    & input:checked + span:after {
+    & input:checked+span:after {
         transform: translateX(5em);
         background-color: #8ce196;
     }

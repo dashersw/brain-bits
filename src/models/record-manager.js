@@ -24,7 +24,6 @@ export default class RecordManager {
     }
 
     onData(data, now) {
-        // data.forEach(l => this.recorder.record(l, now));
         this.recorder.record([now, data]);
     }
 

@@ -8,13 +8,20 @@ export default class MatrixRunner extends EventEmitter {
     /**
      * @param {Matrix} Matrix
      */
-    constructor(matrix) {
+    constructor(matrix, runCount = 1) {
         super();
         this.matrix = matrix;
-        this._matrixIndexes = this.createMatrixIndexes();
-        this._matrixAlphabet = matrix.alphabet;
+        this.matrixIndexes = [];
+        this.matrixAlphabet = matrix.alphabet;
         this._colors = Cell.ColorsList;
         this.timeout = null;
+        this.iteration = 0;
+        this.runCount = runCount;
+        this.highlightInterval = MatrixRunner.DEFAULT_HIGHLIGHT_INTERVAL;
+    }
+
+    get iterationLimit() {
+        return this.runCount * 2;
     }
 
     start() {
@@ -53,23 +60,35 @@ export default class MatrixRunner extends EventEmitter {
         this.lastLoop = now;
 
         if (!this.matrixIndexes.length) {
-            this.resetMatrixIndexes();
             this.iteration++;
+
+            if (this.iteration == this.iterationLimit) {
+                this.emit('endRun');
+                this.reset();
+                return;
+            }
+
+            this.resetMatrixIndexes();
         }
 
         this.colors = this._colors.slice();
 
         this.activeIndex = this.matrixIndexes.shift();
         this.formatAndPublishData(this.activeIndex, now);
+
         this.matrix.dim();
 
         this.activeIndex.forEach(c => this.matrix.highlightCell(c, this.colors.shift()));
 
-        this.timeout = setTimeout(() => this.loop(), 300);
+        setTimeout(() => this.matrix.dim(), this.highlightInterval * 3 / 2);
+
+        this.timeout = setTimeout(() => this.loop(), this.highlightInterval * 2);
     }
 
     formatAndPublishData(activeIndex, now) {
-        const symbols = activeIndex.map(i => [i, this._matrixAlphabet[i]]);
+        const symbols = activeIndex.map(i => [i, this.matrixAlphabet[i]]);
         this.emit('data', symbols, now);
     }
 }
+
+MatrixRunner.DEFAULT_HIGHLIGHT_INTERVAL = 150;

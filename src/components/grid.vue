@@ -21,7 +21,7 @@ export default {
 #grid {
     width: 72vmin;
     height: 72vmin;
-    margin: calc(14vmin - 36px) auto 14vmin;
+    margin: calc(14vmin - 20px) auto;
 
     & .cell {
         display: inline-block;
@@ -31,8 +31,11 @@ export default {
         margin: 2vmin;
         font-size: 4vmin;
         text-align: center;
+        transition: 0.1s;
 
         &.highlighted {
+            color: transparent;
+
             &.red {
                 background: #ff1744;
             }

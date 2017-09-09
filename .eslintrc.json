@@ -10,6 +10,7 @@
         "no-param-reassign": "off",
         "no-underscore-dangle": "off",
         "no-continue": "off",
-        "no-multi-assign": "off"
+        "no-multi-assign": "off",
+        "no-mixed-operators": "off"
     }
 }

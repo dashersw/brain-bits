@@ -1,34 +1,36 @@
 <script>
+import Controls from './components/controls.vue';
 import Grid from './components/grid';
+import Display from './components/display';
 import Matrix from './models/matrix';
 import MatrixRunner from './models/matrix-runner';
-import Controls from './components/controls.vue';
 import SessionManager from './models/session-manager';
 
 export default {
     name: 'app',
     created() {
         this.matrix = new Matrix();
-        this.runner = new MatrixRunner(this.matrix);
-        this.sessionManager = new SessionManager(this.runner);
+        this.sessionManager = new SessionManager(this.matrix);
 
         window.matrix = this.matrix;
-        window.runner = this.runner;
+        window.runner = this.sessionManager.runner;
         window.sm = this.sessionManager;
     },
     data() {
         return {
             matrix: this.matrix,
+            sessionManager: this.sessionManager
         }
     },
-    components: { Grid, Controls }
+    components: { Grid, Controls, Display }
 }
 </script>
 
 <template lang="jade">
 #app
+    display(:symbol="sessionManager.display")
     grid(:matrix="matrix")
-    controls(v-bind:sessionManager="sessionManager")
+    controls(:sessionManager="sessionManager")
 
 </template>
 

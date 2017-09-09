@@ -20,7 +20,6 @@ export default {
     },
     methods: {
         start() { this.sessionManager.startSession(this.sessionMode, this.message); },
-        stop() { this.sessionManager.stopSession(); },
         reset() { this.sessionManager.resetSession(); },
         toggleVisibility() { this.visible = !this.visible; },
     },
@@ -50,14 +49,13 @@ export default {
         fieldset
             span Session
             .button(@click="start()") Start
-            .button(@click="stop()") Stop
             .button(@click="reset()") Reset
 
 </template>
 
 <style lang="scss">
 #controls {
-    background: #121212;
+    background: white;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -65,12 +63,23 @@ export default {
     padding: 15vmin;
     border-radius: 1vmin;
     text-align: center;
-    transform: translate3d(-50%, 50%, 0);
+    transform: translate3d(-50%, -50%, 0) scale(1.1);
     opacity: 0;
-    transition: 0.3s all;
+    transition: transform 0.3s, opacity 0.6s;
     padding: 3vmin;
     font-size: 3vmin;
-    box-shadow: 0 0 0 100vmin rgba(0, 0, 0, 0.9);
+    z-index: 2;
+
+    &:before {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background: rgba(0, 0, 0, 0.9);
+        transform: scale(2);
+    }
 
     fieldset {
         border: none;
@@ -78,7 +87,7 @@ export default {
     }
 
     &.visible {
-        transform: translate3d(-50%, -50%, 0);
+        transform: translate3d(-50%, -50%, 0) scale(1);
         opacity: 1;
     }
 
@@ -97,10 +106,10 @@ export default {
 }
 
 .button:hover {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .button:active {
-    background: rgba(255,255,255,0.3);
+    background: rgba(255, 255, 255, 0.3);
 }
 </style>
