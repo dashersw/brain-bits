@@ -19,8 +19,8 @@ export default {
         bindings.call(this).forEach(b => Mousetrap.bind.call(null, ...b));
     },
     methods: {
-        start() { this.sessionManager.startSession(this.sessionMode, this.message); },
-        reset() { this.sessionManager.resetSession(); },
+        start() { this.sessionManager.startSession(this.sessionMode, this.message); this.visible = false; },
+        reset() { this.sessionManager.resetSession(); this.visible = false; },
         toggleVisibility() { this.visible = !this.visible; },
     },
     data() {
@@ -69,6 +69,7 @@ export default {
     padding: 3vmin;
     font-size: 3vmin;
     z-index: 2;
+    pointer-events: none;
 
     &:before {
         content: "";
@@ -89,10 +90,11 @@ export default {
     &.visible {
         transform: translate3d(-50%, -50%, 0) scale(1);
         opacity: 1;
+        pointer-events: auto;
     }
 
     .toggle {
-        padding-bottom: 1vmin;
+        padding-bottom: 0;
     }
 }
 
