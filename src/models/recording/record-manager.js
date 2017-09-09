@@ -1,5 +1,5 @@
-import MatrixRecorder from './matrix-recorder';
-import MatrixRunner from './matrix-runner';
+import MatrixRecorder from '../matrix/matrix-recorder';
+import MatrixRunner from '../matrix/matrix-runner';
 
 export default class RecordManager {
     /**

@@ -1,4 +1,4 @@
-import { createArray, getRowIndexes, getColIndexes } from '../util';
+import { createArray, getRowIndexes, getColIndexes } from '../../util';
 
 const _alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 

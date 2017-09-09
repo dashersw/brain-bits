@@ -1,7 +1,7 @@
 import LiveSession from './live-session';
-import Matrix from './matrix';
-import MatrixRunner from './matrix-runner';
-import RecordManager from './record-manager';
+import Matrix from '../matrix/matrix';
+import MatrixRunner from '../matrix/matrix-runner';
+import RecordManager from '../recording/record-manager';
 import Session from './session';
 import TrainingSession from './training-session';
 

@@ -1,7 +1,7 @@
 <script>
 import Mousetrap from 'mousetrap';
 import Toggle from './toggle';
-import Session from '../models/session';
+import Session from '../models/session/session';
 
 function bindings() {
     return [

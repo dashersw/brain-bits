@@ -2,9 +2,9 @@
 import Controls from './components/controls.vue';
 import Grid from './components/grid';
 import Display from './components/display';
-import Matrix from './models/matrix';
-import MatrixRunner from './models/matrix-runner';
-import SessionManager from './models/session-manager';
+import Matrix from './models/matrix/matrix';
+import MatrixRunner from './models/matrix/matrix-runner';
+import SessionManager from './models/session/session-manager';
 
 export default {
     name: 'app',

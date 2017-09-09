@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import EventEmitter from 'events';
 
-import { createArray, createRNAM } from '../util';
+import { createArray, createRNAM } from '../../util';
 import { Matrix, Cell } from './matrix';
 
 export default class MatrixRunner extends EventEmitter {
