@@ -17,18 +17,6 @@ const url = require('url');
 
 let mainWindow;
 
-// require('lasso').configure({
-//     outputDir: './src/static',
-//     urlPrefix: './static',
-//     fingerprintsEnabled: false,
-//     // minify: false,
-//     // bundlingEnabled: false,
-//     plugins: [
-//         'lasso-marko',
-//         // 'lasso-less',
-//     ],
-// });
-
 function createWindow() {
     const mainWindowState = windowStateKeeper({
         defaultWidth: 800,
