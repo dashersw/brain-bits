@@ -7,7 +7,7 @@ function bindings() {
     return [
         [['command+o', 'ctrl+o'], this.toggleVisibility],
         [['command+s', 'ctrl+s'], this.start],
-        [['command+d', 'ctrl+d'], this.stop],
+        [['command+e', 'ctrl+e'], this.analyze],
         [['command+t', 'ctrl+t'], this.reset]
     ]
 };
@@ -21,6 +21,7 @@ export default {
     methods: {
         start() { this.sessionManager.startSession(this.sessionMode, this.message); this.visible = false; },
         reset() { this.sessionManager.resetSession(); this.visible = false; },
+        analyze() { this.sessionManager.analyze() },
         toggleVisibility() { this.visible = !this.visible; },
     },
     data() {

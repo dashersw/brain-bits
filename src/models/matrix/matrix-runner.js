@@ -2,7 +2,7 @@ import _ from 'lodash';
 import EventEmitter from 'events';
 
 import { createArray, createRNAM } from '../../util';
-import { Matrix, Cell } from './matrix';
+import { Cell } from './matrix';
 
 export default class MatrixRunner extends EventEmitter {
     /**
@@ -80,7 +80,7 @@ export default class MatrixRunner extends EventEmitter {
 
         this.activeIndex.forEach(c => this.matrix.highlightCell(c, this.colors.shift()));
 
-        setTimeout(() => this.matrix.dim(), this.highlightInterval * 3 / 2);
+        setTimeout(() => this.matrix.dim(), this.highlightInterval * 1 / 2);
 
         this.timeout = setTimeout(() => this.loop(), this.highlightInterval * 2);
     }
@@ -92,3 +92,4 @@ export default class MatrixRunner extends EventEmitter {
 }
 
 MatrixRunner.DEFAULT_HIGHLIGHT_INTERVAL = 150;
+// MatrixRunner.DEFAULT_HIGHLIGHT_INTERVAL = 45;

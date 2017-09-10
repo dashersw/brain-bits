@@ -1,7 +1,5 @@
 import EventEmitter from 'events';
 
-import StateMachine from 'javascript-state-machine';
-
 export default class Session extends EventEmitter {
     constructor(message) {
         super();

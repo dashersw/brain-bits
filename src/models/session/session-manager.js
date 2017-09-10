@@ -4,6 +4,9 @@ import MatrixRunner from '../matrix/matrix-runner';
 import RecordManager from '../recording/record-manager';
 import Session from './session';
 import TrainingSession from './training-session';
+// import Simulator from '../emotiv/simulator';
+import Emotiv from '../emotiv/emotiv';
+import Analyzer from '../analysis/analyzer';
 
 export default class SessionManager {
     /**
@@ -15,9 +18,11 @@ export default class SessionManager {
         this.session = null;
         this.runner = null;
         this.display = null;
+        // this.source = new Simulator();
+        this.source = new Emotiv();
     }
 
-    startSession(mode, message = 'HELLO') {
+    startSession(mode = Session.Mode.TRAINING, message = 'HELLO') {
         if (this.session) return;
 
         this.mode = mode;
@@ -45,13 +50,14 @@ export default class SessionManager {
             else this.display = 'done';
         });
 
+        this.source.start();
         this.session.start();
 
-        this.recordManager = new RecordManager(this.runner);
+        this.recordManager = new RecordManager(this.runner, this.source);
 
         /* live sessions
 
-        this.analyzer.on('decision', (d) => {
+        Analyzer.on('decision', (d) => {
             if (d == 'end') {
                 this.session.end();
             } else {
@@ -66,5 +72,10 @@ export default class SessionManager {
         this.runner.reset();
         this.display = null;
         this.session = null;
+        this.source.stop();
+    }
+
+    analyze() {
+        Analyzer.analyze(this.recordManager.matrixRecorder.dump(), this.recordManager.emotivRecorder.dump());
     }
 }

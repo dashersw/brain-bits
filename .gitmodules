@@ -1,0 +1,3 @@
+[submodule "lib/emokit-c"]
+	path = lib/emokit-c
+	url = https://github.com/dashersw/emokit-c
