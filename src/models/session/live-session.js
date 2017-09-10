@@ -68,6 +68,10 @@ export default class LiveSession extends Session {
     end() {
         this.fsm.end();
     }
+
+    get type() {
+        return Session.Mode.LIVE;
+    }
 }
 
 LiveSession.DEFAULT_RUN_COUNT = Infinity;

@@ -42,10 +42,11 @@ export default class TrainingSession extends Session {
                         }, 2000);
                     }, 1000);
                 },
-                onRunning() {
+                onRun() {
                     session.runs++;
-
-                    session.emit('run');
+                },
+                onRunning() {
+                    session.emit('run', session.message[session.runs]);
                 },
                 onEnded() { session.emit('end'); },
             },
@@ -62,6 +63,10 @@ export default class TrainingSession extends Session {
 
     next() {
         this.fsm.next();
+    }
+
+    get type() {
+        return Session.Mode.TRAINING;
     }
 }
 

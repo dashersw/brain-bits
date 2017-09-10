@@ -33,17 +33,23 @@ export default class SessionManager {
             this.session = new TrainingSession(message);
         }
 
-        this.runner = new MatrixRunner(this.matrix, Infinity);
+        this.runner = new MatrixRunner(this.matrix, this.session.runCount);
 
-        this.runner.runCount = this.session.runCount;
+        this.recordManager = new RecordManager(this.runner, this.source);
 
         this.runner.on('endRun', () => this.session.next());
-        this.session.on('display', () => this.display = this.session.display);
-        this.session.on('run', () => this.runner.start());
+        this.session.on('display', () => {
+            this.display = this.session.display;
+        });
+        this.session.on('run', (symbol) => {
+            this.runner.start();
+            this.recordManager.onDisplayData(symbol, Date.now());
+        });
 
         this.session.on('end', () => {
             const { session } = this;
 
+            this.saveSession(session);
             this.resetSession();
 
             if (session instanceof LiveSession) this.display = session.message;
@@ -52,8 +58,6 @@ export default class SessionManager {
 
         this.source.start();
         this.session.start();
-
-        this.recordManager = new RecordManager(this.runner, this.source);
 
         /* live sessions
 
@@ -75,7 +79,17 @@ export default class SessionManager {
         this.source.stop();
     }
 
+    saveSession(session) {
+        const {
+            runCount, runs, message, type,
+        } = session;
+
+        this.recordManager.save({
+            runCount, runs, message, type,
+        });
+    }
+
     analyze() {
-        Analyzer.analyze(this.recordManager.matrixRecorder.dump(), this.recordManager.emotivRecorder.dump());
+        Analyzer.analyze();
     }
 }

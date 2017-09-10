@@ -2,3 +2,4 @@
 node_modules
 .esm-cache
 build
+sessions
