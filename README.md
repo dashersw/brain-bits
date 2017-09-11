@@ -10,9 +10,28 @@ Clone the source code:
 
     git clone git@github.com:dashersw/brain-bits.git
 
-Change to the directory and install dependencies:
+### External dependencies
+
+This project depends on external libraries like `hidapi` and `mcrypt` for USB communication.
+If you have both hidapi and mcrypt, you can skip this step.
+
+Install external dependencies:
+
+    brew install hidapi
+    brew install mcrypt
+
+### Project dependencies
+
+Change to the directory:
 
     cd brain-bits
+
+Install submodules:
+
+    git submodule update --init --recursive
+
+Finally:
+
     npm install
 
 ## Starting the app
