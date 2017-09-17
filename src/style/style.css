@@ -55,3 +55,20 @@ drag-region:hover {
     transition-delay: 0s;
     background: #111;
 }
+
+#chart-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    padding: 40px 0;
+    background: white;
+    z-index: 2;
+}
+
+.line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+  }
