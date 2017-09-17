@@ -63,7 +63,8 @@ export default class MatrixRunner extends EventEmitter {
             this.iteration++;
 
             if (this.iteration == this.iterationLimit) {
-                this.emit('endRun');
+                setTimeout(() => this.emit('endRun'), 2000);
+
                 this.reset();
                 return;
             }
