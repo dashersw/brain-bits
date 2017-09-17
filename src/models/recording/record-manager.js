@@ -1,3 +1,4 @@
+import dateformat from 'dateformat';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 import DisplayRecorder from './display-recorder';
@@ -54,7 +55,9 @@ export default class RecordManager {
         log.meta.timestamp = +log.meta.date;
 
         mkdirp.sync('./sessions');
-        fs.writeFileSync(`./sessions/${new Date()}.json`, JSON.stringify(log));
+
+
+        fs.writeFileSync(`./sessions/${dateformat(log.meta.date, 'yyyy.mm.dd_HH.MM.ss')}.json`, JSON.stringify(log));
     }
 
     dispose() {
