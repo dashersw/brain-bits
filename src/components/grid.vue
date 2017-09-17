@@ -13,51 +13,67 @@ export default {
 </template>
 
 <style lang="scss">
+
+$red: #ff1744;
+$orange: #ff5722;
+$blue: #1565c0;
+$yellow: #795548;
+$green: #388e3c;
+$purple: #8e24aa;
+
 #grid-container {
     text-align: center;
     height: 100%;
 }
 
 #grid {
-    width: 72vmin;
-    height: 72vmin;
-    margin: calc(14vmin - 20px) auto;
+    width: 90vw;
+    height: 96vh;
+    margin: calc(1vh - 20px) auto;
 
     & .cell {
         display: inline-block;
-        width: 8vmin;
-        height: 8vmin;
-        line-height: 8.5vmin;
-        margin: 2vmin;
-        font-size: 4vmin;
+        width: 5vw;
+        height: 6vh;
+        line-height: 6vh;
+        margin: 5vh 5vw;
+        font-size: 4vh;
         text-align: center;
-        transition: 0.1s;
+        opacity: 0.3;
 
         &.highlighted {
-            color: transparent;
+            opacity: 1;
+            background: none!important;
+            color: white!important;
 
             &.red {
-                background: #ff1744;
+                background: $red;
+                color: $red;
             }
 
             &.orange {
-                background: #ff5722;
+                background: $orange;
+                color: $orange;
             }
 
             &.blue {
-                background: #1565c0;
+                background: $blue;
+                color: $blue;
             }
 
             &.yellow {
-                background: #795548;
+                background: $yellow;
+                color: $yellow;
             }
 
             &.green {
-                background: #388e3c;
+                background: $green;
+                color: $green;
             }
 
             &.purple {
-                background: #8e24aa;
+                background: $purple;
+                color: $purple;
             }
         }
 
