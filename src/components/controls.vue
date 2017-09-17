@@ -27,7 +27,7 @@ export default {
     data() {
         return {
             visible: false,
-            trainingMode: true,
+            trainingMode: false,
             message: 'HELLO'
         };
     },
