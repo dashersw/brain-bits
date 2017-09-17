@@ -41,7 +41,7 @@ export default class LiveSession extends Session {
                         setTimeout(() => {
                             session._display(null);
 
-                            setTimeout(() => session.fsm.run(), 2000);
+                            setTimeout(() => session.fsm.run(), 3000);
                         }, 2000);
                     }, 1000);
                 },
@@ -49,7 +49,7 @@ export default class LiveSession extends Session {
                     session.runs++;
                 },
                 onRunning() {
-                    session.emit('run');
+                    setTimeout(() => session.emit('run'), 3000);
                 },
                 onEnded() { session.emit('end'); },
             },
