@@ -39,8 +39,8 @@ export default class TrainingSession extends Session {
                             session._display(null);
 
                             setTimeout(() => session.fsm.run(), 2000);
-                        }, 2000);
-                    }, 1000);
+                        }, 4000);
+                    }, 3000);
                 },
                 onRun() {
                     session.runs++;
