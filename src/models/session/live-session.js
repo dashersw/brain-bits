@@ -36,7 +36,7 @@ export default class LiveSession extends Session {
                     session._display('');
 
                     setTimeout(() => {
-                        session._display(session.message[session.runs]);
+                        session._display(session.message);
 
                         setTimeout(() => {
                             session._display(null);
