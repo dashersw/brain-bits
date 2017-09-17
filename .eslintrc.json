@@ -11,6 +11,7 @@
         "no-underscore-dangle": "off",
         "no-continue": "off",
         "no-multi-assign": "off",
-        "no-mixed-operators": "off"
+        "no-mixed-operators": "off",
+        "no-restricted-syntax": "off"
     }
 }
