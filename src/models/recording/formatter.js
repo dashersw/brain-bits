@@ -49,6 +49,7 @@ export default function format(matrixData, emotivData, displayData) {
 }
 
 function formatElectrodesData(d) {
-    return channels.map(c => d.levels[c]);
+    return d;
+    // return channels.map(c => d.levels[c]);
 }
 

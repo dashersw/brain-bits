@@ -29,6 +29,10 @@ export default class SessionManager {
 
         if (this.mode == Session.Mode.LIVE) {
             this.session = new LiveSession();
+            Analyzer.on('decision', (d) => {
+                Analyzer.cancelPendingAnalyses();
+                this.session.next(d[0]);
+            });
         } else if (this.mode == Session.Mode.TRAINING) {
             this.session = new TrainingSession(message);
         }
@@ -36,14 +40,17 @@ export default class SessionManager {
         this.runner = new MatrixRunner(this.matrix, this.session.runCount);
 
         this.recordManager = new RecordManager(this.runner, this.source);
+        Analyzer.setSource(this.recordManager.emotivRecorder);
 
         this.runner.on('endRun', () => this.session.next());
         this.session.on('display', () => {
+            this.runner.stop();
             this.display = this.session.display;
         });
         this.session.on('run', (symbol) => {
-            this.runner.start();
             this.recordManager.onDisplayData(symbol, Date.now());
+            this.runner.start();
+            Analyzer.reset();
         });
 
         this.session.on('end', () => {
@@ -56,20 +63,13 @@ export default class SessionManager {
             else this.display = 'done';
         });
 
-        this.source.start();
-        this.session.start();
-
-        /* live sessions
-
-        Analyzer.on('decision', (d) => {
-            if (d == 'end') {
-                this.session.end();
-            } else {
-                this.session.next(d);
-            }
+        this.runner.on('data', (data, timestamp) => {
+            Analyzer.feed(data, timestamp);
         });
 
-        */
+        this.source.start();
+        this.session.start();
+        Analyzer.start();
     }
 
     resetSession() {
@@ -77,6 +77,7 @@ export default class SessionManager {
         this.display = null;
         this.session = null;
         this.source.stop();
+        Analyzer.reset();
     }
 
     saveSession(session) {
