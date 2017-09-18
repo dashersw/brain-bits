@@ -57,7 +57,7 @@ export default class RecordManager {
         mkdirp.sync('./sessions');
 
 
-        fs.writeFileSync(`./sessions/${dateformat(log.meta.date, 'yyyy.mm.dd_HH.MM.ss')}.json`, JSON.stringify(log));
+        fs.writeFileSync(`./sessions/${dateformat(log.meta.date, 'yyyy.mm.dd_HH.MM.ss')}.json`, JSON.stringify(log, null, '\t'));
     }
 
     dispose() {

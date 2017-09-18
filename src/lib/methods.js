@@ -250,7 +250,7 @@ function train(data, channels, modelFilename) {
 
     const filename = `./nn-models/${savedData.opts.learningRate}-${savedData.opts.sizes.join('|')}-${dateformat(new Date(), 'yyyy.mm.dd_HH.MM.ss')}.json`;
 
-    fs.writeFileSync(filename, JSON.stringify(savedData));
+    fs.writeFileSync(filename, JSON.stringify(savedData, null, '\t'));
 
     return net;
 }
