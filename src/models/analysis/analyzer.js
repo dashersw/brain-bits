@@ -90,15 +90,14 @@ class Analyzer extends EventEmitter {
 
             if (o[0] > 0.3) {
                 if (this.predictions[target] == -1) this.predictions[target] = 1;
+                this.predictions[target] *= 2 + o[0];
             }
-
-            this.predictions[target] *= 2 + o[0];
         });
 
         console.log(matrix.map(m => m[1]).join(' | '));
         console.log(`output ${o[0]}`, this.predictions);
 
-        const prediction = this.getPredictedSymbol(this.predictions, 50);
+        const prediction = this.getPredictedSymbol(this.predictions, 4);
 
         if (prediction) {
             console.log('predicted', prediction);
@@ -113,7 +112,7 @@ class Analyzer extends EventEmitter {
 
         console.log(predictions[0], predictions[1], predictions[2]);
 
-        if (predictions[0][1] > predictions[1][1] * coeff) {
+        if (predictions[1][1] > 0 && predictions[0][1] > predictions[1][1] * coeff) {
             return predictions[0];
         }
 
