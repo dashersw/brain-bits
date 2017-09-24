@@ -53,8 +53,8 @@ function getFeatureVector(data) {
 function getEpochData(data, key = 0) {
     return getFeatureVector(data
         .map(e => e.slice(key, key + 128))
-        .map(decimator)
-        .map(winsor.bind(null, 5)));
+        .map(winsor.bind(null, 5))
+        .map(decimator));
 }
 
 function filterLp(arr) {
