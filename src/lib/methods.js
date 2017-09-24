@@ -60,10 +60,10 @@ function filterLp(arr) {
     const iirCalculator = new Fili.CalcCascades();
 
     const iirFilterCoeffs = iirCalculator.lowpass({
-        order: 1,
+        order: 3,
         characteristic: 'butterworth',
         Fs: 128,
-        Fc: 16,
+        Fc: 12,
     });
 
     const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
@@ -76,7 +76,7 @@ function filterHp(arr) {
     const iirCalculator = new Fili.CalcCascades();
 
     const iirFilterCoeffs = iirCalculator.highpass({
-        order: 1,
+        order: 3,
         characteristic: 'butterworth',
         Fs: 128,
         Fc: 1,
