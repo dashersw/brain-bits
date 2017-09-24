@@ -21,14 +21,13 @@ function winsor(percentile, arr) {
     rv = rv.map(v => (v - mean) / std);
 
     const percentage = percentile / 100 / 2;
-    // const min = m.min(rv);
-    const min = m.quantileSeq(rv, percentage);
-    // const max = m.max(rv);
-    const max = m.quantileSeq(rv, 1 - percentage);
-
+    const min = m.min(rv);
+    // const min = m.quantileSeq(rv, percentage);
+    const max = m.max(rv);
+    // const max = m.quantileSeq(rv, 1 - percentage);
     for (let i = 0; i < len; i++) {
-        // if (rv[i] < min) rv[i] = min;
-        // else if (rv[i] > max) rv[i] = max;
+        if (rv[i] < min) rv[i] = min;
+        else if (rv[i] > max) rv[i] = max;
 
         rv[i] = normalize(min, max, rv[i]);
     }
