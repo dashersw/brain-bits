@@ -6,6 +6,7 @@ const mkdirp = require('mkdirp');
 const { Matrix, Vector } = require('vectorious');
 const brain = require('brain.js');
 const dateformat = require('dateformat');
+const BLDA = require('./blda');
 
 function normalize(min, max, v) {
     return (v - min) / (max - min);
@@ -255,6 +256,33 @@ function train(data, channels, modelFilename) {
     return net;
 }
 
+function trainBLDA(data, channels, modelFilename, cb) {
+    const classifier = new BLDA();
+
+    if (modelFilename) {
+        const model = require(modelFilename);
+
+        classifier.evidence = model.evidence;
+        classifier.alpha = model.alpha;
+        classifier.beta = model.beta;
+        classifier.p = model.p;
+        classifier.w = model.w;
+    }
+
+    classifier.train(data.vectors, data.labels, () => {
+        if (!modelFilename) {
+            mkdirp.sync('./blda-models');
+
+            const filename = `./blda-models/${dateformat(new Date(), 'yyyy.mm.dd_HH.MM.ss')}.json`;
+
+            fs.writeFileSync(filename, JSON.stringify(classifier, null, '\t'));
+        }
+
+        cb && cb(classifier);
+
+        return classifier;
+    });
+}
 
 module.exports = {
     filter,
@@ -264,4 +292,5 @@ module.exports = {
     getSessionFromRecording,
     splitSessionIntoTrainingAndTest,
     train,
+    trainBLDA,
 };

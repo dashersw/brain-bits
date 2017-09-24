@@ -15,11 +15,13 @@
     "electron-window-state": "^4.1.1",
     "fili": "^2.0.0",
     "javascript-state-machine": "^3.0.1",
+    "jsfeat": "0.0.8",
     "lodash": "^4.17.4",
     "mathjs": "^3.16.3",
     "mkdirp": "^0.5.1",
     "mousetrap": "^1.6.1",
     "node-addon-api": "^0.6.3",
+    "request": "^2.82.0",
     "vectorious": "^4.8.1",
     "vue": "^2.4.2",
     "vueify": "^9.4.1"
