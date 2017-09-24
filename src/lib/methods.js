@@ -16,8 +16,9 @@ function winsor(percentile, arr) {
     const len = rv.length;
 
     const mean = m.mean(rv);
+    const std = m.std(rv);
 
-    rv = rv.map(v => v - mean);
+    rv = rv.map(v => (v - mean) / std);
 
     const percentage = percentile / 100 / 2;
     // const min = m.min(rv);
