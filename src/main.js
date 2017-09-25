@@ -4,6 +4,7 @@ import path from 'path';
 import electron from 'electron';
 import vueDevTools from 'vue-devtools';
 import windowStateKeeper from 'electron-window-state';
+import '../lib/matlab-eigserver-runner';
 
 const { app, BrowserWindow } = electron;
 
