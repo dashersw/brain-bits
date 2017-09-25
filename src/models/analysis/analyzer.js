@@ -2,8 +2,8 @@ import EventEmitter from 'events';
 import _ from 'lodash';
 import { getEpochData } from '../../lib/methods';
 
-
-import b__ from 'brain.js';
+import BLDAAnalyzer from './blda-analyzer';
+import NNAnalyzer from './nn-analyzer';
 
 const channelsMap = {
     F3: 1,
@@ -25,14 +25,13 @@ const channelsMap = {
 const channels = Object.keys(channelsMap).filter(c => channelsMap[c]);
 
 class Analyzer extends EventEmitter {
-    constructor() {
+    constructor(method = Analyzer.Methods.NN) {
         super();
 
-        if (process.env.MODEL) {
-            const { model, opts } = require(process.env.MODEL);
-            console.log(model, opts);
-            this.net = new brain.NeuralNetwork(opts);
-            this.net.fromJSON(model);
+        if (method == Analyzer.Methods.NN) {
+            this.classifier = new NNAnalyzer();
+        } else if (method == Analyzer.Methods.BLDA) {
+            this.classifier = new BLDAAnalyzer();
         }
     }
 
@@ -67,7 +66,7 @@ class Analyzer extends EventEmitter {
     }
 
     analyze(matrix, startIndex) {
-        if (!this.net) {
+        if (!this.classifier.trained) {
             console.warn('Analysis failed: no classifier trained');
             return;
         }
@@ -82,42 +81,17 @@ class Analyzer extends EventEmitter {
 
         const epochData = getEpochData(data);
 
-        const o = this.net.run(epochData);
-
-
-        matrix.forEach(([, target]) => {
-            this.predictions[target] = this.predictions[target] || -1;
-
-            if (o[0] > 0.3) {
-                if (this.predictions[target] == -1) this.predictions[target] = 1;
-                this.predictions[target] *= 2 + o[0];
-            }
-        });
-
-        console.log(matrix.map(m => m[1]).join(' | '));
-        console.log(`output ${o[0]}`, this.predictions);
-
-        const prediction = this.getPredictedSymbol(this.predictions, 4);
+        const prediction = this.classifier.classify(epochData, matrix, this.predictions);
 
         if (prediction) {
-            console.log('predicted', prediction);
             this.emit('decision', prediction);
         }
     }
-
-    getPredictedSymbol(predictions, coeff) {
-        predictions = _.map(predictions, (v, k) => [k, v]);
-
-        predictions.sort((a, b) => b[1] - a[1]);
-
-        console.log(predictions[0], predictions[1], predictions[2]);
-
-        if (predictions[1][1] > 0 && predictions[0][1] > predictions[1][1] * coeff) {
-            return predictions[0];
-        }
-
-        return null;
-    }
 }
+
+Analyzer.Methods = {
+    NN: 'nn',
+    BLDA: 'blda',
+};
 
 export default new Analyzer();

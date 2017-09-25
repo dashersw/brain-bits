@@ -267,6 +267,10 @@ function trainBLDA(data, channels, modelFilename, cb) {
         classifier.beta = model.beta;
         classifier.p = model.p;
         classifier.w = model.w;
+
+        cb && cb(classifier);
+
+        return classifier;
     }
 
     classifier.train(data.vectors, data.labels, () => {
@@ -279,8 +283,6 @@ function trainBLDA(data, channels, modelFilename, cb) {
         }
 
         cb && cb(classifier);
-
-        return classifier;
     });
 }
 
