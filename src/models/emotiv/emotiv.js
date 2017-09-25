@@ -7,6 +7,10 @@ emotivProcess.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
 });
 
+process.on('exit', () => {
+    emotivProcess.kill();
+});
+
 export default class Emotiv extends EventEmitter {
     start() {
         if (emotivProcess.listenerCount > 0) return;
