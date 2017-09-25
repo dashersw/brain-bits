@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import EventEmitter from 'events';
 
-import { createArray, createRNAM } from '../../util';
+import { createArray, createRNAM, createRCM } from '../../util';
 import { Cell } from './matrix';
 
 export default class MatrixRunner extends EventEmitter {
@@ -48,7 +48,8 @@ export default class MatrixRunner extends EventEmitter {
     createMatrixIndexes() {
         const arr = createArray(this.matrix.size).map((e, i) => i);
 
-        return createRNAM(arr, this.matrix.rows, this.matrix.cols);
+        // return createRNAM(arr, this.matrix.rows, this.matrix.cols);
+        return createRCM(arr, this.matrix.rows, this.matrix.cols);
     }
 
     resetMatrixIndexes() {

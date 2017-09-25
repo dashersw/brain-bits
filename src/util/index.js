@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export const createArray = length => Array.from(new Array(length));
 
 export const getRowIndexes = (rows, cols) => createArray(rows)
@@ -53,4 +55,13 @@ export const createRNAM = (/** @type { Array.<number> } */arr, groupCount, group
     }
 
     return rv;
+};
+
+export const createRCM = (/** @type { Array.<number> } */arr, groupCount, groupSize) => {
+    const tempArr = arr.slice();
+
+    const rows = _.times(groupCount, n => tempArr.slice(n * groupSize, (n + 1) * groupSize));
+    const cols = _.times(groupCount, n => _.times(groupSize, t => tempArr[t * groupSize + n]));
+
+    return rows.concat(cols);
 };
