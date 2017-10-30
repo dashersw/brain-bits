@@ -40,3 +40,10 @@ function work(channels) {
 }
 
 work(channels);
+
+// const channelCombinations = _.times(30, (n) => {
+//     const ch = _.sampleSize(channels, 8);
+//     console.log(ch);
+
+//     work(ch);
+// });
