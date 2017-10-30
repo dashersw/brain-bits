@@ -3,6 +3,9 @@ import EventEmitter from 'events';
 
 const emotivProcess = spawn('node', ['lib/emotiv-reader.js'], { stdio: ['ipc', 'ignore', 'ignore'] });
 
+window.onbeforeunload = (e) => {
+    emotivProcess.kill();
+};
 
 emotivProcess.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
