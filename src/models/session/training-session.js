@@ -70,4 +70,4 @@ export default class TrainingSession extends Session {
     }
 }
 
-TrainingSession.DEFAULT_RUN_COUNT = 5;
+TrainingSession.DEFAULT_RUN_COUNT = 10;
