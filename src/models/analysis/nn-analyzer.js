@@ -1,4 +1,5 @@
 import b__ from 'brain.js';
+import _ from 'lodash';
 
 export default class NNAnalyzer {
     constructor() {
@@ -12,28 +13,17 @@ export default class NNAnalyzer {
         }
     }
 
-    classify(data, matrix, predictions) {
-        const o = this.net.run(data);
+    classify(data, matrix, predictions, alphabet) {
+        const score = this.net.run(data)[0];
 
-        // if (o[0] < 0.7) {
-        // console.log(`output ${o[0]} is too small for analysis.`);
-        // return;
-        // }
-
-        matrix.forEach(([, target]) => {
-            predictions[target] = predictions[target] || -1;
-            // predictions[target] = (2 ** o[0]) * (predictions[target] || Math.E);
-
-            if (o[0] > 0.3) {
-                if (predictions[target] == -1) predictions[target] = 1;
-                predictions[target] *= 2 + o[0];
-            }
-        });
+        const setName = matrix.map(m => m[1]).join('');
+        predictions[setName] = predictions[setName] || 0;
+        predictions[setName] += score;
 
         console.log(matrix.map(m => m[1]).join(' | '));
-        console.log(`output ${o[0]}`, predictions);
+        console.log(`output ${score}`, predictions);
 
-        const prediction = this.getPredictedSymbol(predictions, 4);
+        const prediction = this.getPredictedSymbol(alphabet, predictions, 2);
 
         if (prediction) {
             console.log('predicted', prediction);
@@ -41,15 +31,21 @@ export default class NNAnalyzer {
         }
     }
 
-    getPredictedSymbol(predictions, coeff) {
-        predictions = _.map(predictions, (v, k) => [k, v]);
+    getPredictedSymbol(alphabet, predictions, coeff = 1) {
+        let matrix = {};
 
-        predictions.sort((a, b) => b[1] - a[1]);
+        Object.keys(predictions).forEach(set => {
+            set.split('').forEach(char => matrix[char] = predictions[set] + (matrix[char] || 0))
+        });
 
-        console.log(predictions[0], predictions[1], predictions[2]);
+        matrix = _.map(matrix, (v, k) => [k, 2 ** v]);
 
-        if (predictions[1][1] > 0 && predictions[0][1] > predictions[1][1] * coeff) {
-            return predictions[0];
+        matrix.sort((a, b) => b[1] - a[1]);
+
+        console.log('leading predictions:', matrix[0].join(':'), matrix[1].join(':'), matrix[2].join(':'));
+
+        if (matrix[1][1] > 0 && matrix[0][1] > matrix[1][1] * 2 * coeff && matrix[0][1] > matrix[2][1] * 4) {
+            return matrix[0];
         }
 
         return null;

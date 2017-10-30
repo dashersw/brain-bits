@@ -11,21 +11,17 @@ export default class BLDAAnalyzer {
         }
     }
 
-    classify(data, matrix, predictions) {
+    classify(data, matrix, predictions, alphabet) {
         const score = this.classifier.classify(data.map(v => [v]))[0];
 
-        matrix.forEach(([, target]) => {
-            predictions[target] = predictions[target] || -1;
-
-            const coeff = 1;
-
-            predictions[target] += score * coeff;
-        });
+        const setName = matrix.map(m => m[1]).join('');
+        predictions[setName] = predictions[setName] || 0;
+        predictions[setName] += score;
 
         console.log(matrix.map(m => m[1]).join(' | '));
         console.log(`output ${score}`, predictions);
 
-        const prediction = this.getPredictedSymbol(predictions);
+        const prediction = this.getPredictedSymbol(alphabet, predictions, 2);
 
         if (prediction) {
             console.log('predicted', prediction);
@@ -33,15 +29,21 @@ export default class BLDAAnalyzer {
         }
     }
 
-    getPredictedSymbol(predictions, coeff = 1) {
-        predictions = _.map(predictions, (v, k) => [k, v]);
+    getPredictedSymbol(alphabet, predictions, coeff = 1) {
+        let matrix = {};
 
-        predictions.sort((a, b) => b[1] - a[1]);
+        Object.keys(predictions).forEach(set => {
+            set.split('').forEach(char => matrix[char] = predictions[set] + (matrix[char] || 0))
+        });
 
-        console.log('leading predictions:', predictions[0].join(':'), predictions[1].join(':'), predictions[2].join(':'));
+        matrix = _.map(matrix, (v, k) => [k, 2 ** v]);
 
-        if (predictions[1][1] > 0 && predictions[0][1] > predictions[1][1] + 1.5 * coeff && predictions[0][1] > predictions[2][1] + 2.5) {
-            return predictions[0];
+        matrix.sort((a, b) => b[1] - a[1]);
+
+        console.log('leading predictions:', matrix[0].join(':'), matrix[1].join(':'), matrix[2].join(':'));
+
+        if (matrix[1][1] > 0 && matrix[0][1] > matrix[1][1] * 2 * coeff && matrix[0][1] > matrix[2][1] * 4) {
+            return matrix[0];
         }
 
         return null;

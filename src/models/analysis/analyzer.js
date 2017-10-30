@@ -38,6 +38,10 @@ class Analyzer extends EventEmitter {
         this.source = source;
     }
 
+    setAlphabet(alphabet) {
+        this.alphabet = alphabet;
+    }
+
     reset() {
         this.predictions = {};
         this.cancelPendingAnalyses();
@@ -80,7 +84,7 @@ class Analyzer extends EventEmitter {
 
         const epochData = getEpochData(data);
 
-        const prediction = this.classifier.classify(epochData, matrix, this.predictions);
+        const prediction = this.classifier.classify(epochData, matrix, this.predictions, this.alphabet);
 
         if (prediction) {
             this.emit('decision', prediction);

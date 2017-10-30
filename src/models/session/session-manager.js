@@ -41,6 +41,7 @@ export default class SessionManager {
 
         this.recordManager = new RecordManager(this.runner, this.source);
         Analyzer.setSource(this.recordManager.emotivRecorder);
+        Analyzer.setAlphabet(this.matrix.alphabet);
 
         this.runner.on('endRun', () => this.session.next());
         this.session.on('display', () => {
