@@ -292,6 +292,7 @@ module.exports = {
     getEpochData,
     classify,
     getSessionFromRecording,
+    prepareElectrodesData,
     splitSessionIntoTrainingAndTest,
     train,
     trainBLDA,
