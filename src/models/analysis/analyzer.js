@@ -1,7 +1,6 @@
 import EventEmitter from 'events';
 import _ from 'lodash';
 import { getEpochData } from '../../lib/methods';
-
 import BLDAAnalyzer from './blda-analyzer';
 import NNAnalyzer from './nn-analyzer';
 
