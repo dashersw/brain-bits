@@ -37,7 +37,7 @@ module.exports = class BLDA {
         labels = labels.map(l => (l == 1 ? n_examples / n_posexamples : -n_examples / n_negexamples));
 
         // add feature that is constantly one (bias term)
-        featureVectors.push(_.fill(Array(1906), 1));
+        featureVectors.push(_.fill(Array(featureVectors[0].length), 1));
 
         // initialize variables for fast iterative estimation of alpha and beta
         const n_features = featureVectors.length; // dimension of feature vectors
