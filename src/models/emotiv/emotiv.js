@@ -1,7 +1,8 @@
 import { spawn } from 'child_process';
 import EventEmitter from 'events';
 
-const emotivProcess = spawn('node', ['--napi-modules', 'lib/emotiv-reader.js'], { stdio: ['ipc', 'ignore', 'ignore'] });
+const emotivProcess = spawn('node', ['lib/emotiv-reader.js'], { stdio: ['ipc', 'ignore', 'ignore'] });
+
 
 emotivProcess.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
