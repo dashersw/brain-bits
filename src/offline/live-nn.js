@@ -55,15 +55,15 @@ function work(channels) {
         counter++;
         totalCounter++;
 
-        const o = net.run(e);
-        const matrix = recording.data.matrix[matrixKeys[i]];
+        const score = net.run(e)[0];
+        const matrix = testRecording.data.matrix[matrixKeys[i]];
 
         const setName = matrix.map(m => m[1]).join('');
         predictions[setName] = predictions[setName] || 0;
         predictions[setName] += score;
 
         console.log(matrix.map(m => m[1]).join(' '));
-        console.log(`output ${o[0]} ${counter}`);
+        console.log(`output ${score} ${counter}`);
 
         const prediction = getPredictedSymbol(testRecording.meta.matrixSettings.alphabet, predictions, 2);
         console.log('=======');
@@ -98,7 +98,7 @@ function getPredictedSymbol(alphabet, predictions, coeff = 1) {
         return matrix[0];
     }
 
-    return null;``
+    return null;
 }
 
 work(channels);
