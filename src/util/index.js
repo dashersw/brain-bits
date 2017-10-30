@@ -42,7 +42,7 @@ export const createRNAM = (/** @type { Array.<number> } */arr, groupCount, group
 
             const rndIndex = rnd(groupTempArr.length);
             const rndItem = groupTempArr.splice(rndIndex, 1)[0];
-            if (rndItem == null) debugger;
+
             if (group.some(r => adjacent(r, rndItem)) && iteration / 2 < groupTempArr.length) {
                 continue;
             }
