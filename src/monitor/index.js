@@ -1,5 +1,7 @@
 const d3 = require('d3');
 
+import Fili from 'fili';
+
 import Emotiv from './models/emotiv/emotiv';
 import { channels } from './models/emotiv/constants';
 
@@ -11,15 +13,15 @@ const svg = d3.select('svg');
 const margin = {
     top: 20, right: 20, bottom: 20, left: 40,
 };
-const width = +svg.attr('width') - margin.left - margin.right;
-const height = +svg.attr('height') - margin.top - margin.bottom;
+const width = +window.innerWidth - margin.left - margin.right;
+const height = +window.innerHeight - margin.top - margin.bottom;
 
 const x = d3.scaleLinear()
     .domain([0, n - 1])
     .range([0, width]);
 
 const y = d3.scaleLinear()
-    .domain([7500, 8000])
+    .domain([-1000, 8000])
     .range([height, 0]);
 
 const line = d3.line()
@@ -49,7 +51,7 @@ const channelPaths = channels.map((channel, i) => {
         .attr('clip-path', 'url(#clip)')
         .append('path')
         .datum(data)
-        .attr('class', 'line')
+        .attr('class', 'line line-' + i)
         .transition()
         .duration(10)
         .ease(d3.easeLinear)
@@ -70,9 +72,29 @@ ee.cq = cq;
 channels.forEach(c => buffer[c] = []);
 channels.forEach(c => cq[c] = []);
 
+const iirCalculator = new Fili.CalcCascades();
+
+const highpassFilters = channels.map(c => new Fili.IirFilter(iirCalculator.highpass({
+    order: 1,
+    characteristic: 'butterworth',
+    Fs: 128,
+    Fc: 1,
+})));
+
+const lowpassFilters = channels.map(c => new Fili.IirFilter(iirCalculator.lowpass({
+    order: 1,
+    characteristic: 'butterworth',
+    Fs: 128,
+    Fc: 32,
+})));
+
+const filter = (filterIndex, data) => {
+    return highpassFilters[filterIndex].multiStep(lowpassFilters[filterIndex].multiStep(data));
+}
+
 emotiv.start();
 emotiv.on('data', (d) => {
-    channels.forEach((c) => {
+    channels.forEach((c, i) => {
         buffer[c] = buffer[c] || [];
         cq[c] = d.cq[c];
         buffer[c].push(d.levels[c]);
@@ -81,7 +103,11 @@ emotiv.on('data', (d) => {
 
 function tick(data, channel, i) {
     const bufferCopy = buffer[channel].slice();
-    const bufferToPush = bufferCopy.map(b => b);
+    let bufferToPush = bufferCopy.map(b => b);
+
+    if (bufferToPush.length) {
+        bufferToPush = filter(i, bufferToPush).map(v => v + i * 500 + 500)
+    }
 
     buffer[channel].length = 0;
 
@@ -101,7 +127,6 @@ function tick(data, channel, i) {
 
     // Pop the old data point off the front.
     let len = data.length - 2048;
-    if (len <= 0) return;
-    while (--len) data.shift();
+    data.splice(0, len + 1);
     // Push a new data point onto the back.
 }

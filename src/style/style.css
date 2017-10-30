@@ -69,6 +69,58 @@ drag-region:hover {
 
 .line {
     fill: none;
-    stroke: #000;
-    stroke-width: 1.5px;
-  }
+    stroke: red;
+    stroke-width: 1px;
+}
+
+.line-0 {
+    stroke: tomato;
+}
+
+.line-1 {
+    stroke: #080F0F;
+}
+
+.line-2 {
+    stroke: #A4BAB7;
+}
+
+.line-3 {
+    stroke: #19535F;
+}
+
+.line-4 {
+    stroke: #BEA57D;
+}
+
+.line-5 {
+    stroke: #A52422;
+}
+
+.line-7 {
+    stroke: #A2708A;
+}
+
+.line-8 {
+    stroke: #E6AF2E;
+}
+
+.line-9 {
+    stroke: #A3320B;
+}
+
+.line-10 {
+    stroke: #0B7A75;
+}
+
+.line-11 {
+    stroke: #19535F;
+}
+
+.line-12 {
+    stroke: #F35B04;
+}
+
+.line-13 {
+    stroke: #3D348B;
+}
