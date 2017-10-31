@@ -60,8 +60,8 @@ export const createRNAM = (/** @type { Array.<number> } */arr, groupCount, group
 export const createRCM = (/** @type { Array.<number> } */arr, groupCount, groupSize) => {
     const tempArr = arr.slice();
 
-    const rows = _.times(groupCount, n => tempArr.slice(n * groupSize, (n + 1) * groupSize));
-    const cols = _.times(groupCount, n => _.times(groupSize, t => tempArr[t * groupSize + n]));
+    const rows = _.times(groupCount, n => tempArr.slice(n * groupSize, (n + 1) * groupSize).sort((a, b) => a - b));
+    const cols = _.times(groupCount, n => _.times(groupSize, t => tempArr[t * groupSize + n]).sort((a, b) => a - b));
 
     return rows.concat(cols);
 };
