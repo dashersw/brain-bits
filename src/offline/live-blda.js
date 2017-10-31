@@ -49,7 +49,7 @@ function work(channels) {
     const electrodesData = prepareElectrodesData(testRecording.data.electrodes, channels);
     const matrixKeys = Object.keys(testRecording.data.matrix);
 
-    const reset = matrixKeys.filter((k, i) => matrixKeys[i + 1] > +k + 500).map(k => matrixKeys.indexOf(k))
+    const reset = matrixKeys.filter((k, i) => matrixKeys[i + 1] > +k + 500).map(k => matrixKeys.indexOf(k));
 
     const epochs = matrixKeys.map(Number)
         .map(key => getEpochData(electrodesData, key));
@@ -96,8 +96,8 @@ function work(channels) {
 function getPredictedSymbol(alphabet, predictions, coeff = 1) {
     let matrix = {};
 
-    Object.keys(predictions).forEach(set => {
-        set.split('').forEach(char => matrix[char] = predictions[set] + (matrix[char] || 0))
+    Object.keys(predictions).forEach((set) => {
+        set.split('').forEach(char => matrix[char] = predictions[set] + (matrix[char] || 0));
     });
 
     matrix = _.map(matrix, (v, k) => [k, 2 ** v]);
