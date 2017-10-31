@@ -30,7 +30,7 @@ function winsor(percentile, arr) {
         if (rv[i] < min) rv[i] = min;
         else if (rv[i] > max) rv[i] = max;
 
-        rv[i] = normalize(min, max, rv[i]);
+        // rv[i] = normalize(min, max, rv[i]);
     }
 
     return rv;
