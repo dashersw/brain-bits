@@ -63,7 +63,10 @@ function work(channels) {
             counter++;
             totalCounter++;
 
-            const score = classifier.classify(e.map(v => [v]))[0];
+            let score = classifier.classify(e.map(v => [v]))[0];
+
+            if (!process.env.MATLAB_EIG_SERVER) score /= 10;
+
             const matrix = testRecording.data.matrix[matrixKeys[i]];
 
             const setName = matrix.map(m => m[1]).join('');
