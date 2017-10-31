@@ -133,13 +133,13 @@ export default {
             const len = data.length - n;
             data.splice(0, len + 1);
 
-            this.timeout = setTimeout(() => {
+            this.timeout = requestAnimationFrame(() => {
                 tick.call(this, data, channel, i);
-            }, 100);
+            });
         }
     },
     beforeDestroy() {
-        clearTimeout(this.timeout);
+        cancelAnimationFrame(this.timeout);
         this.emotiv.removeListener('data', this.listener);
     }
 }
@@ -168,7 +168,6 @@ export default {
     fill: none;
     stroke: red;
     stroke-width: 1px;
-    transition: .1s all;
     transform: translate3d(0,0,0)
 }
 
