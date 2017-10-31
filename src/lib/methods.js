@@ -64,7 +64,7 @@ function filterLp(arr) {
         order: 3,
         characteristic: 'butterworth',
         Fs: 128,
-        Fc: 12,
+        Fc: 16,
     });
 
     const iirFilter = new Fili.IirFilter(iirFilterCoeffs);
