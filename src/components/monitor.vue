@@ -90,17 +90,17 @@ export default {
         const iirCalculator = new Fili.CalcCascades();
 
         const highpassFilters = channels.map(c => new Fili.IirFilter(iirCalculator.highpass({
-            order: 1,
+            order: 3,
             characteristic: 'butterworth',
             Fs: 128,
             Fc: 1,
         })));
 
         const lowpassFilters = channels.map(c => new Fili.IirFilter(iirCalculator.lowpass({
-            order: 1,
+            order: 3,
             characteristic: 'butterworth',
             Fs: 128,
-            Fc: 32,
+            Fc: 64,
         })));
 
         const filter = (filterIndex, data) => highpassFilters[filterIndex].multiStep(lowpassFilters[filterIndex].multiStep(data));
