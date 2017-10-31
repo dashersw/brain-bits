@@ -92,8 +92,8 @@ $purple: #8e24aa;
             font-size: 3vmin;
             color: white!important;
             border-radius: 50%;
-            background: none !important;
-            // box-shadow: inset 0 0 0 2px rgba(255,255,255,0.3);
+            // background: none !important;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5);
             // box-shadow: none;
         }
     }
