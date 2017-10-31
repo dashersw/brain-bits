@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import EventEmitter from 'events';
 
-import { createArray, createRNAM, createRCM } from '../../util';
+import { createRCM } from '../../util';
 import { Cell } from './matrix';
 
 export default class MatrixRunner extends EventEmitter {
@@ -12,7 +12,11 @@ export default class MatrixRunner extends EventEmitter {
         super();
         this.matrix = matrix;
         this.matrixIndexes = [];
+        this.lastTwoIndexes = [];
+
         this.matrixAlphabet = matrix.alphabet;
+        this.shuffledMatrixIndexes = matrix.shuffledIndexes;
+
         this._colors = Cell.ColorsList;
         this.timeout = null;
         this.iteration = 0;
@@ -21,7 +25,7 @@ export default class MatrixRunner extends EventEmitter {
     }
 
     get iterationLimit() {
-        return this.runCount * 2;
+        return this.runCount;
     }
 
     start() {
@@ -46,14 +50,22 @@ export default class MatrixRunner extends EventEmitter {
     }
 
     createMatrixIndexes() {
-        const arr = createArray(this.matrix.size).map((e, i) => i);
-
         // return createRNAM(arr, this.matrix.rows, this.matrix.cols);
-        return createRCM(arr, this.matrix.rows, this.matrix.cols);
+        return createRCM(this.shuffledMatrixIndexes, this.matrix.rows, this.matrix.cols);
     }
 
     resetMatrixIndexes() {
         this.matrixIndexes = _.shuffle(this.createMatrixIndexes());
+        while (
+            _.isEqual(`${this.lastTwoIndexes[0]}`, `${this.matrixIndexes[0]}`) ||
+            _.isEqual(`${this.lastTwoIndexes[0]}`, `${this.matrixIndexes[1]}`) ||
+            _.isEqual(`${this.lastTwoIndexes[1]}`, `${this.matrixIndexes[0]}`) ||
+            _.isEqual(`${this.lastTwoIndexes[1]}`, `${this.matrixIndexes[1]}`)
+        ) {
+            this.matrixIndexes = _.shuffle(this.createMatrixIndexes());
+        }
+
+        this.lastTwoIndexes = _.takeRight(this.matrixIndexes, 2);
     }
 
     loop() {
@@ -73,16 +85,17 @@ export default class MatrixRunner extends EventEmitter {
             this.resetMatrixIndexes();
         }
 
-        this.colors = this._colors.slice();
+        this.colors = _.shuffle(this._colors.slice());
 
         this.activeIndex = this.matrixIndexes.shift();
         this.formatAndPublishData(this.activeIndex, now);
 
         this.matrix.dim();
+        console.log(this.activeIndex.sort((a, b) => a - b).join(' | '));
 
         this.activeIndex.forEach(c => this.matrix.highlightCell(c, this.colors.shift()));
 
-        setTimeout(() => this.matrix.dim(), this.highlightInterval * 1 / 2);
+        setTimeout(() => this.matrix.dim(), this.highlightInterval * 2 / 2);
 
         this.timeout = setTimeout(() => this.loop(), this.highlightInterval * 2);
     }
