@@ -194,7 +194,7 @@ void Complete(napi_env env, napi_status status, void *data)
     assert(s == napi_ok);
 
     napi_value result;
-    s = napi_make_callback(env, global, callback, 2, argv, &result);
+    s = napi_make_callback(env, NULL, global, callback, 2, argv, &result);
     assert(s == napi_ok);
 
     // napi_delete_reference(env, c->_callback);
@@ -221,7 +221,11 @@ napi_value read(napi_env env, napi_callback_info info)
 
     status = napi_create_reference(env, argv[0], 1, &the_carrier._callback);
     assert(status == napi_ok);
-    status = napi_create_async_work(env, Execute, Complete, &the_carrier, &the_carrier._request);
+
+    napi_value title;
+    napi_create_string_utf8(env, "emotiv::read", NAPI_AUTO_LENGTH, &title);
+
+    status = napi_create_async_work(env, NULL, title, Execute, Complete, &the_carrier, &the_carrier._request);
     assert(status == napi_ok);
     status = napi_queue_async_work(env, the_carrier._request);
     assert(status == napi_ok);
@@ -253,7 +257,7 @@ void CancelComplete(napi_env env, napi_status status, void *data)
         assert(s == napi_ok);
         napi_value result;
 
-        s = napi_make_callback(env, global, callback, 0, nullptr, &result);
+        s = napi_make_callback(env, NULL, global, callback, 0, nullptr, &result);
         assert(s == napi_ok);
     }
 
@@ -261,49 +265,6 @@ void CancelComplete(napi_env env, napi_status status, void *data)
     assert(s == napi_ok);
     s = napi_delete_reference(env, c->_callback);
     assert(s == napi_ok);
-}
-
-void CancelExecute(napi_env env, void *data)
-{
-}
-
-napi_value TestCancel(napi_env env, napi_callback_info info)
-{
-    napi_status status;
-
-    size_t argc = 1;
-    napi_value argv[1];
-    napi_value _this;
-    void *data;
-
-    // make sure the work we are going to cancel will not be
-    // able to start by using all the threads in the pool
-    for (int i = 1; i < MAX_CANCEL_THREADS; i++)
-    {
-        status = napi_create_async_work(env, CancelExecute,
-                                        BusyCancelComplete, &async_carrier[i], &async_carrier[i]._request);
-        assert(status == napi_ok);
-
-        status = napi_queue_async_work(env, async_carrier[i]._request);
-        assert(status == napi_ok);
-    }
-
-    // now queue the work we are going to cancel and then cancel it.
-    // cancel will fail if the work has already started, but
-    // we have prevented it from starting by consuming all of the
-    // workers above.
-    status = napi_get_cb_info(env, info, &argc, argv, &_this, &data);
-    assert(status == napi_ok);
-    status = napi_create_async_work(env, CancelExecute,
-                                    CancelComplete, &async_carrier[0], &async_carrier[0]._request);
-    assert(status == napi_ok);
-    status = napi_create_reference(env, argv[0], 1, &async_carrier[0]._callback);
-    assert(status == napi_ok);
-    status = napi_queue_async_work(env, async_carrier[0]._request);
-    assert(status == napi_ok);
-    status = napi_cancel_async_work(env, async_carrier[0]._request);
-    assert(status == napi_ok);
-    return nullptr;
 }
 
 #define DECLARE_NAPI_PROPERTY(name, func)           \
@@ -320,15 +281,20 @@ napi_value _connect(napi_env env, napi_callback_info info)
     return connection;
 }
 
-void Init(napi_env env, napi_value exports, napi_value module, void *priv)
+napi_value Init(napi_env env, napi_value exports)
 {
+    napi_status status;
+
     napi_property_descriptor properties[] = {
         DECLARE_NAPI_PROPERTY("read", read),
         DECLARE_NAPI_PROPERTY("connect", _connect),
         DECLARE_NAPI_PROPERTY("disconnect", disconnect),
     };
 
-    napi_define_properties(env, exports, sizeof(properties) / sizeof(*properties), properties);
+    status = napi_define_properties(env, exports, sizeof(properties) / sizeof(*properties), properties);
+
+    assert(status == napi_ok);
+    return exports;
 }
 
 NAPI_MODULE(addon, Init)
