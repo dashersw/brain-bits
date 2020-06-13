@@ -100,7 +100,7 @@ export default {
             order: 3,
             characteristic: 'butterworth',
             Fs: 128,
-            Fc: 64,
+            Fc: 32,
         })));
 
         const filter = (filterIndex, data) => highpassFilters[filterIndex].multiStep(lowpassFilters[filterIndex].multiStep(data));

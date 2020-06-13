@@ -28,7 +28,7 @@ export default {
         return {
             visible: false,
             trainingMode: false,
-            message: 'HELLO'
+            message: 'XBL81EAGSO'
         };
     },
     computed: {

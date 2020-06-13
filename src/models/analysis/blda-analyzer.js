@@ -32,8 +32,8 @@ export default class BLDAAnalyzer {
     getPredictedSymbol(alphabet, predictions, coeff = 1) {
         let matrix = {};
 
-        Object.keys(predictions).forEach(set => {
-            set.split('').forEach(char => matrix[char] = predictions[set] + (matrix[char] || 0))
+        Object.keys(predictions).forEach((set) => {
+            set.split('').forEach(char => matrix[char] = predictions[set] + (matrix[char] || 0));
         });
 
         matrix = _.map(matrix, (v, k) => [k, 2 ** v]);

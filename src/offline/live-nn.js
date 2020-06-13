@@ -7,7 +7,7 @@
 */
 
 const {
-    train, getEpochData, prepareElectrodesData, getSessionFromRecording, splitSessionIntoTrainingAndTest
+    train, getEpochData, prepareElectrodesData, getSessionFromRecording, splitSessionIntoTrainingAndTest,
 } = require('../lib/methods');
 
 const _ = require('lodash');
@@ -30,20 +30,24 @@ const channelsMap = {
 };
 const channels = Object.keys(channelsMap).filter(c => channelsMap[c]);
 
+process.env.TRAINING_RECORD = '../../sessions/2017.11.26_09.20.45';
+// process.env.TEST_RECORD = '../../sessions/2017.10.30_20.04.08';
+// process.env.MODEL = '../../nn-models/0.01-448|224|1-2017.10.30_23.06.04';
+
 const recording = require(process.env.TRAINING_RECORD);
 
 function work(channels) {
     const session = getSessionFromRecording(recording, channels);
-    const { training } = splitSessionIntoTrainingAndTest(session, 1);
+    const { training } = splitSessionIntoTrainingAndTest(session, 0.3);
 
-    const testRecording = require(process.env.TEST_RECORD);
-    const electrodesData = prepareElectrodesData(testRecording.data.electrodes, channels);
-    const matrixKeys = Object.keys(testRecording.data.matrix);
+    // const testRecording = require(process.env.TEST_RECORD);
+    // const electrodesData = prepareElectrodesData(testRecording.data.electrodes, channels);
+    // const matrixKeys = Object.keys(testRecording.data.matrix);
 
-    const reset = matrixKeys.filter((k, i) => matrixKeys[i + 1] > +k + 500).map(k => matrixKeys.indexOf(k))
+    // const reset = matrixKeys.filter((k, i) => matrixKeys[i + 1] > +k + 500).map(k => matrixKeys.indexOf(k));
 
-    const epochs = matrixKeys.map(Number)
-        .map(key => getEpochData(electrodesData, key));
+    // const epochs = matrixKeys.map(Number)
+    //     .map(key => getEpochData(electrodesData, key));
 
     const net = train(training, channels, process.env.MODEL);
 
@@ -84,8 +88,8 @@ function work(channels) {
 function getPredictedSymbol(alphabet, predictions, coeff = 1) {
     let matrix = {};
 
-    Object.keys(predictions).forEach(set => {
-        set.split('').forEach(char => matrix[char] = predictions[set] + (matrix[char] || 0))
+    Object.keys(predictions).forEach((set) => {
+        set.split('').forEach(char => matrix[char] = predictions[set] + (matrix[char] || 0));
     });
 
     matrix = _.map(matrix, (v, k) => [k, 2 ** v]);

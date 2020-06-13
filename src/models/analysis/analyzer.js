@@ -23,6 +23,9 @@ const channelsMap = {
 
 const channels = Object.keys(channelsMap).filter(c => channelsMap[c]);
 
+process.env.MODEL = '../../blda-models/2018.04.11_14.25.39';
+// process.env.MODEL = '../../../nn-models/test';
+
 class Analyzer extends EventEmitter {
     constructor(method = Analyzer.Methods.NN) {
         super();
@@ -97,4 +100,4 @@ Analyzer.Methods = {
     BLDA: 'blda',
 };
 
-export default new Analyzer();
+export default new Analyzer('blda');

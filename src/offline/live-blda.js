@@ -34,6 +34,14 @@ const channelsMap = {
 };
 const channels = Object.keys(channelsMap).filter(c => channelsMap[c]);
 
+process.env.TRAINING_RECORD = '../../sessions/2018.04.11_14.20.35';
+// process.env.TEST_RECORD = '../../sessions/2017.10.30_20.04.08';
+
+// process.env.TRAINING_RECORD = '../../sessions/2017.10.30_19.51.47';
+// process.env.TEST_RECORD = '../../sessions/2017.10.30_20.04.08';
+// process.env.MODEL = '../../blda-models/2017.10.31_16.49.54';
+process.env.MODEL = '';
+
 const recording = require(process.env.TRAINING_RECORD);
 
 function work(channels) {
